@@ -1,0 +1,101 @@
+
+%% Program 1: Verifying a Trigonometric Identity
+% Data: Identity: sin^2(theta) + cos^2(theta) = 1, Example angle: theta = pi/4
+% Formula: LHS = sin^2(theta) + cos^2(theta), RHS = 1
+
+theta = pi / 4; % Example value for theta
+LHS = sin(theta)^2 + cos(theta)^2;
+RHS = 1;
+fprintf('LHS: %.2f, RHS: %.2f\n', LHS, RHS);
+
+%% Program 2: Temperature Change in a Chamber
+% Data: T0 = 120F, Ts = 38F, k = 0.45, t = 3 hours
+% Formula: T(t) = Ts + (T0 - Ts) * exp(-k * t)
+
+T0 = 120; Ts = 38; k = 0.45; t = 3; % Initial values
+T = Ts + (T0 - Ts) * exp(-k * t);
+fprintf('Temperature after 3 hours: %.2f°F\n', T);
+
+%% Program 3: Coefficient of Friction
+% Data: F = [12, 15, 14, 10, 9, 13] N, m = 5 kg
+% Formula: mu = F / m, Average mu = sum(mu) / number of tests
+
+F = [12, 15, 14, 10, 9, 13]; % Forces in N
+m = 5; % Mass in kg
+mu = F / m;
+avg_mu = mean(mu);
+fprintf('Coefficients: %s, Average: %.2f\n', num2str(mu), avg_mu);
+
+%% Program 4: Piston-Rod-Crank Mechanism
+% Data: Crank speed = 500 rpm, Crank length = 0.1 m, Rod length = 0.5 m
+% Formulas: Position, Velocity, Acceleration
+
+rpm = 500; t = linspace(0, 1, 100); % Time vector for one revolution
+theta = 2 * pi * rpm / 60 * t;
+r = 0.1; l = 0.5; % Example crank and rod lengths
+x = r * cos(theta) + sqrt(l^2 - (r * sin(theta)).^2);
+v = gradient(x, t); % Velocity
+a = gradient(v, t); % Acceleration
+plot(t, x, t, v, t, a);
+legend('Position', 'Velocity', 'Acceleration');
+xlabel('Time (s)'); ylabel('Values');
+
+%% Program 5: Projectile Trajectory with Wind
+% Data: v0 = 250 m/s, theta = 65 degrees, v_wind = 30 m/s, g = 9.81 m/s^2
+% Formulas: x, y without wind, x with wind
+
+v0 = 250; theta = 65; v_wind = 30; g = 9.81; % Initial values
+t = linspace(0, 2 * v0 * sind(theta) / g, 100);
+x = v0 * cosd(theta) * t; y = v0 * sind(theta) * t - 0.5 * g * t.^2;
+x_wind = x + v_wind * t;
+plot(x, y, x_wind, y); legend('No wind', 'With wind');
+xlabel('X (m)'); ylabel('Y (m)');
+
+%% Program 6: Retirement Savings
+% Data: P = $300,000, r = 5%, withdrawal = $25,000, inflation = 2%
+% Formulas: New balance, New withdrawal
+
+P = 300000; r = 0.05; withdrawal = 25000; inflation = 0.02; % Initial values
+years = 0; balance = P; balances = []; withdrawals = [];
+while balance > 0
+    years = years + 1;
+    balances(end+1) = balance;
+    withdrawals(end+1) = withdrawal;
+    balance = balance * (1 + r) - withdrawal;
+    withdrawal = withdrawal * (1 + inflation);
+end
+plot(1:years, balances, 1:years, withdrawals);
+legend('Balance', 'Withdrawals'); xlabel('Year'); ylabel('Amount ($)');
+
+%% Program 7: Random Singer Order
+% Data: Singers = [John, Mary, Tracy, Mike, Katie, David]
+% Formula: Random permutation of array elements
+
+singers = {'John', 'Mary', 'Tracy', 'Mike', 'Katie', 'David'};
+order = singers(randperm(length(singers)));
+disp(order);
+
+%% Program 8: Projectile Trajectory Function
+% Data: v0 = 230 m/s, theta = 39 degrees, g = 9.81 m/s^2
+% Formulas: Trajectory, Maximum height, Range
+
+function [h, d] = projectile(v0, theta)
+    g = 9.81; % Gravitational acceleration
+    t = linspace(0, 2 * v0 * sind(theta) / g, 100);
+    x = v0 * cosd(theta) * t; y = v0 * sind(theta) * t - 0.5 * g * t.^2;
+    h = max(y); d = max(x);
+    plot(x, y); xlabel('X (m)'); ylabel('Y (m)'); title('Projectile Trajectory');
+end
+[~, ~] = projectile(230, 39);
+
+%% Program 9: Aluminum Box Thickness
+% Data: Box dimensions: L = 24 in, W = 12 in, H = 4 in, Weight = 15 lb
+% Aluminum density: rho = 0.101 lb/in^3
+% Formulas: Volume, Weight
+
+L = 24; W = 12; H = 4; weight = 15; density = 0.101; % Dimensions and weight
+syms x
+volume = L * W * x + 2 * (L * H * x + W * H * x);
+eq = density * volume == weight;
+x_sol = double(solve(eq, x));
+fprintf('Wall thickness: %.4f inches\n', x_sol);
